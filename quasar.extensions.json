@@ -2,6 +2,7 @@
   "@quasar/apollo": {
     "graphql_uri": "https://main-jpp5zbs80rp4e46g-gtw.qovery.io/v1/graphql"
   },
+  "system-environment-variables": {},
   "@quasar/dotenv": {
     "env_development": ".env",
     "env_production": ".env",
