@@ -1,0 +1,85 @@
+
+<template>
+  <q-layout view="hHh LpR fFf">
+    <q-header elevated>
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="leftDrawerOpen = !leftDrawerOpen"
+        />
+
+        <q-toolbar-title>
+          Social Campaigns
+        </q-toolbar-title>
+
+        <div>v{{ $q.version }}</div>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      v-model="leftDrawerOpen"
+      bordered
+      overlay
+      content-class="bg-grey-1"
+    >
+      <q-list>
+        <q-item-label
+          header
+          class="text-grey-8"
+        >
+          Menu
+        </q-item-label>
+        <q-item v-for="link in menuLinks"
+          :key="link.title"
+          clickable v-ripple :to="link.link">
+          <q-item-section avatar>
+            <q-icon color="primary" :name="link.icon" />
+          </q-item-section>
+
+          <q-item-section>{{ link.title }}</q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
+</template>
+
+<script>
+
+export default {
+  name: 'MainLayout',
+
+  data () {
+    return {
+      leftDrawerOpen: false,
+      menuLinks: [
+        {
+          title: 'Home',
+          caption: 'home',
+          icon: 'school',
+          link: '/#'
+        },
+        {
+          title: 'Live Logs',
+          caption: 'live-logs',
+          icon: 'code',
+          link: '/live-logs'
+        },
+        {
+          title: 'Logs',
+          caption: 'logs',
+          icon: 'code',
+          link: '/logs'
+        },
+      ]
+    }
+  }
+}
+</script>
