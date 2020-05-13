@@ -19,7 +19,7 @@ const httpLinkConfig = {
 
 const wsLinkConfig = {
   uri:
-    "ws://" +
+    "wss://" +
     (process.env.GRAPHQL_URI ||
       "main-jpp5zbs80rp4e46g-gtw.qovery.io/v1/graphql"),
   options: {
