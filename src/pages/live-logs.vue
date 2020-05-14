@@ -135,6 +135,9 @@ export default {
       if(finalProps.col.type === 'badge' && finalProps.value === 'ERROR'){
         finalProps.col.settings.color = 'red'
       }
+      if(finalProps.col.type === 'timeago'){
+        finalProps.col.settings.autoUpdate = 5
+      }
       return finalProps;
     }
   }
