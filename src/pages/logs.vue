@@ -15,14 +15,32 @@
           ref="logsTable"
           @request="onRequest"
         >
+          <template v-slot:header-cell-id="props">
+            <q-th :props="props" auto-width class="th-id">
+              {{ props.col.label }}
+            </q-th>
+          </template>
           <template v-slot:top-row="props">
             <q-tr>
               <q-td v-for="col in props.cols" :key="col.name">
                 <column-filter
-                  v-if="col.filter"
+                  v-if="col.filter && !Array.isArray(col.filter)"
                   :col="col"
+                  :filter="col.filter"
                   v-model="colsFilters[col.field]"
                 />
+                <div
+                  v-else-if="col.filter && Array.isArray(col.filter)"
+                  class="row no-wrap q-gutter-md"
+                >
+                  <div v-for="filter in col.filter" :key="filter.id">
+                    <column-filter
+                      :col="col"
+                      :filter="filter"
+                      v-model="colsFilters[filter.id]"
+                    />
+                  </div>
+                </div>
               </q-td>
             </q-tr>
           </template>
@@ -119,19 +137,34 @@ export default {
   computed: {
     activeFilters() {
       let activeFilter = {};
+      let col;
       const filters = Object.entries(this.colsFilters).map(filter => {
-        const col = this.$store.state.appStore.logs.columns.find(
+        col = this.$store.state.appStore.logs.columns.find(
           col => col.field === filter[0]
         );
-        console.log(col);
+
+        if (!col) {
+          col = this.$store.state.appStore.logs.columns.find(
+            col =>
+              Array.isArray(col.filter) &&
+              col.filter.find(subFilter => subFilter.id === filter[0])
+          );
+
+          if (col) {
+            col = { ...col };
+            col.filter = col.filter.find(f => f.id === filter[0]);
+          }
+        }
         const op = col.filter.op ? col.filter.op : "_eq";
         if (filter[1]) {
-          activeFilter[filter[0]] = {
-            [op]: op === "_ilike" ? `%${filter[1]}%` : filter[1]
-          };
+          if (!activeFilter[col.field]) {
+            activeFilter[col.field] = {};
+          }
+          activeFilter[col.field][op] =
+            op === "_ilike" ? `%${filter[1]}%` : filter[1];
         }
 
-        return { [filter[0]]: { [op]: filter[1] ? filter[1] : null } };
+        return { [col.field]: { [op]: filter[1] ? filter[1] : null } };
       });
       return activeFilter;
     }
@@ -151,3 +184,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.th-id {
+  min-width: 150px;
+}
+</style>

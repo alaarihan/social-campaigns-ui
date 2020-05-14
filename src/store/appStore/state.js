@@ -8,6 +8,20 @@ export default function() {
           label: "#",
           field: "id",
           align: "left",
+          filter: [
+            {
+              id: "id_gte",
+              label: ">=",
+              type: "number",
+              op: "_gte"
+            },
+            {
+              id: "id_lte",
+              label: "<=",
+              type: "number",
+              op: "_lte"
+            }
+          ],
           sortable: true
         },
         {
