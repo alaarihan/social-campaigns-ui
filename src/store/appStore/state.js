@@ -41,7 +41,7 @@ export default function() {
           settings: { color: "green" },
           filter: {
             type: "select",
-            options: ["INFO", "ERROR"]
+            options: [{ label: 'All', value: null }, "INFO", "ERROR"]
           },
           sortable: true
         },

@@ -7,6 +7,7 @@
     clearable
     :options="col.filter.options"
     :label="label"
+    emit-value
     @input="$emit('input', model)"
   />
   <q-input
