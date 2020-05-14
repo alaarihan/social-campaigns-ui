@@ -7,38 +7,44 @@ export default function() {
           required: true,
           label: "#",
           field: "id",
-          align: 'left',
+          align: "left",
           sortable: true
         },
         {
           name: "message",
           label: "Message",
           field: "message",
-          align: 'left',
-          sortable: true
+          align: "left",
+          sortable: true,
+          filter: { op: "_ilike" }
         },
         {
           name: "type",
           label: "Type",
           field: "type",
-          align: 'left',
+          align: "left",
           type: "badge",
-          settings: {color: 'green'},
+          settings: { color: "green" },
+          filter: {
+            type: "select",
+            options: ["INFO", "ERROR"]
+          },
           sortable: true
         },
         {
           name: "account",
           label: "Account",
           field: "account",
-          align: 'left',
+          align: "left",
           sortable: false
         },
         {
           name: "created",
           label: "Created",
           field: "created_at",
-          align: 'left',
+          align: "left",
           type: "timeago",
+          settings: { autoUpdate: false },
           sortable: true
         }
       ]

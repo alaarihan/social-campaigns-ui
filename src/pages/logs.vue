@@ -6,7 +6,7 @@
           style="height: calc(100vh - 85px);"
           class="sticky-header-table"
           :data="log"
-          :columns="this.$store.state.appStore.logs.columns"
+          :columns="$store.state.appStore.logs.columns"
           :pagination.sync="pagination"
           :rows-per-page-options="[10, 20, 50, 100, 200, 500, 0]"
           row-key="id"
@@ -15,9 +15,17 @@
           ref="logsTable"
           @request="onRequest"
         >
-        <!-- <template v-slot:top-row="props">
-            <div>Here it is</div>
-        </template> -->
+          <template v-slot:top-row="props">
+            <q-tr>
+              <q-td v-for="col in props.cols" :key="col.name">
+                <column-filter
+                  v-if="col.filter"
+                  :col="col"
+                  v-model="colsFilters[col.field]"
+                />
+              </q-td>
+            </q-tr>
+          </template>
           <template v-slot:body-cell="props">
             <table-cell :props="finalProps(props)"> </table-cell>
           </template>
@@ -31,8 +39,14 @@
 import gql from "graphql-tag";
 import clone from "clone";
 import TableCell from "../components/TableCell";
+import ColumnFilter from "../components/ColumnFilter";
 const LOGS_QUERY = gql`
-  query log($limit: Int, $where: log_bool_exp, $order_by: [log_order_by!], $offset: Int) {
+  query log(
+    $limit: Int
+    $where: log_bool_exp
+    $order_by: [log_order_by!]
+    $offset: Int
+  ) {
     log(limit: $limit, where: $where, order_by: $order_by, offset: $offset) {
       id
       message
@@ -47,7 +61,7 @@ const LOGS_QUERY = gql`
 `;
 export default {
   name: "Logs",
-  components: { TableCell },
+  components: { TableCell, ColumnFilter },
   apollo: {
     log: {
       query: LOGS_QUERY,
@@ -55,6 +69,7 @@ export default {
         return {
           limit: this.pagination.rowsPerPage,
           offset: this.pagination.rowsPerPage * (this.pagination.page - 1),
+          where: this.activeFilters ? this.activeFilters : null,
           order_by: this.pagination.sortBy
             ? {
                 [this.pagination.sortBy]: this.pagination.descending
@@ -67,14 +82,19 @@ export default {
     },
     log_aggregate: {
       query: gql`
-        query log_aggregate {
-          log_aggregate {
+        query log_aggregate($where: log_bool_exp) {
+          log_aggregate(where: $where) {
             aggregate {
               count
             }
           }
         }
-      `
+      `,
+      variables() {
+        return {
+          where: this.activeFilters ? this.activeFilters : null
+        };
+      }
     }
   },
   data() {
@@ -85,18 +105,36 @@ export default {
         page: 1,
         rowsPerPage: 20,
         rowsNumber: 0
-      }
+      },
+      colsFilters: {}
     };
   },
   watch: {
-    log_aggregate(newVal, oldVal){
-      if(!this.log_aggregate) return;
+    log_aggregate(newVal, oldVal) {
+      if (!this.log_aggregate) return;
       this.pagination.rowsNumber = this.log_aggregate.aggregate.count;
     }
   },
-  created() {
-  },
+  created() {},
   computed: {
+    activeFilters() {
+      let activeFilter = {};
+      const filters = Object.entries(this.colsFilters).map(filter => {
+        const col = this.$store.state.appStore.logs.columns.find(
+          col => col.field === filter[0]
+        );
+        console.log(col);
+        const op = col.filter.op ? col.filter.op : "_eq";
+        if (filter[1]) {
+          activeFilter[filter[0]] = {
+            [op]: op === "_ilike" ? `%${filter[1]}%` : filter[1]
+          };
+        }
+
+        return { [filter[0]]: { [op]: filter[1] ? filter[1] : null } };
+      });
+      return activeFilter;
+    }
   },
   methods: {
     finalProps(props) {
