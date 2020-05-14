@@ -123,8 +123,8 @@ module.exports = function(/* ctx */) {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: "Social Campaigns UI",
-        short_name: "Social Campaigns UI",
+        name: "Social Campaigns",
+        short_name: "Social Campaigns",
         description: "A UI To manage Social Camoaigns Data",
         display: "standalone",
         orientation: "portrait",
