@@ -6,11 +6,15 @@
           :cols="$store.state.appStore.logs.columns"
           :gql-queries="gqlQueries"
           model-name="log"
+          :show-filters="true"
+          :show-popup-editors="true"
         >
           <template v-slot:body-cell="{ props }">
             <table-cell
               v-if="props.col.type === 'badge'"
               :props="finalProps(props)"
+              :show-editor="true"
+              v-model="props.value"
             >
             </table-cell>
           </template>
@@ -53,6 +57,24 @@ const LOGS_AGGREGATE = gql`
     }
   }
 `;
+const LOG_UPDATE = gql`
+  mutation update_log($_set: log_set_input, $where: log_bool_exp!) {
+    update_log(where: $where, _set: $_set) {
+      affected_rows
+      returning {
+        id
+        message
+      }
+    }
+  }
+`;
+const LOGS_DELETE = gql`
+  mutation delete_log($where: log_bool_exp!) {
+    delete_log(where: $where) {
+      affected_rows
+    }
+  }
+`;
 
 export default {
   name: "Logs",
@@ -61,7 +83,9 @@ export default {
     return {
       gqlQueries: {
         query: LOGS_QUERY,
-        aggregate: LOGS_AGGREGATE
+        aggregate: LOGS_AGGREGATE,
+        update: LOG_UPDATE,
+        delete: LOGS_DELETE
       }
     };
   },

@@ -4,7 +4,6 @@
     v-model="model"
     filled
     dense
-    clearable
     :options="col.filter.options"
     :label="label"
     emit-value

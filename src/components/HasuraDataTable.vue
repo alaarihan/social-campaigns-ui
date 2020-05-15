@@ -14,12 +14,22 @@
     ref="dataTable"
     @request="onRequest"
   >
+    <template v-slot:top-right>
+      <q-btn
+        v-if="selected && selected.length"
+        color="red"
+        icon="delete"
+        label="Delete"
+        no-caps
+        @click="deleteSelected"
+      />
+    </template>
     <template v-slot:header-cell-id="props">
       <q-th :props="props" auto-width class="th-id">
         {{ props.col.label }}
       </q-th>
     </template>
-    <template v-slot:top-row="props">
+    <template v-if="showFilters" v-slot:top-row="props">
       <q-tr>
         <q-td></q-td>
         <q-td v-for="col in props.cols" :key="col.name">
@@ -46,7 +56,13 @@
     </template>
     <template v-slot:body-cell="props">
       <slot name="body-cell" :props="props">
-        <table-cell :props="props"> </table-cell>
+        <table-cell
+          :props="props"
+          :show-editor="showPopupEditors"
+          v-model="props.row[props.col.field]"
+          @input="onCellValueChange($event, props)"
+        >
+        </table-cell>
       </slot>
     </template>
   </q-table>
@@ -71,6 +87,16 @@ export default {
     modelName: {
       type: String,
       required: true
+    },
+    showFilters: {
+      type: Boolean,
+      default: true,
+      required: false
+    },
+    showPopupEditors: {
+      type: Boolean,
+      default: true,
+      required: false
     }
   },
   apollo: {
@@ -120,7 +146,8 @@ export default {
         rowsNumber: 0
       },
       colsFilters: {},
-      selected: []
+      selected: [],
+      editedItem: {}
     };
   },
   watch: {
@@ -167,6 +194,57 @@ export default {
     onRequest(props) {
       const { page, rowsPerPage, sortBy, descending } = props.pagination;
       this.pagination = props.pagination;
+    },
+    onCellValueChange(event, props) {
+      console.log(event, props);
+      this.updateField(props.row.id, props.col.field, event);
+    },
+    updateField(id, key, value) {
+      this.$apollo
+        .mutate({
+          // Query
+          mutation: this.gqlQueries.update,
+          // Parameters
+          variables: {
+            where: { id: { _eq: id } },
+            _set: { [key]: value }
+          }
+        })
+        .then(data => {
+          // Result
+          console.log(data);
+          this.$apollo.queries.data.refetch();
+        })
+        .catch(error => {
+          // Error
+          console.error(error);
+        });
+    },
+    deleteItems(ids) {
+      this.$apollo
+        .mutate({
+          // Query
+          mutation: this.gqlQueries.delete,
+          // Parameters
+          variables: {
+            where: { id: { _in: ids } }
+          }
+        })
+        .then(data => {
+          // Result
+          this.$apollo.queries.data.refetch();
+          this.selected = [];
+        })
+        .catch(error => {
+          // Error
+          console.error(error);
+        });
+    },
+    deleteSelected() {
+      if (this.selected.length) {
+        const ids = this.selected.map(row => row.id);
+        this.deleteItems(ids);
+      }
     }
   }
 };

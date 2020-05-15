@@ -22,6 +22,9 @@ export default function() {
               op: "_lte"
             }
           ],
+          editor: {
+            type: "number"
+          },
           sortable: true
         },
         {
@@ -30,7 +33,10 @@ export default function() {
           field: "message",
           align: "left",
           sortable: true,
-          filter: { op: "_ilike" }
+          filter: { op: "_ilike" },
+          editor: {
+            type: "textarea"
+          }
         },
         {
           name: "type",
@@ -41,7 +47,11 @@ export default function() {
           settings: { color: "green" },
           filter: {
             type: "select",
-            options: [{ label: 'All', value: null }, "INFO", "ERROR"]
+            options: [{ label: "All", value: null }, "INFO", "ERROR"]
+          },
+          editor: {
+            type: "select",
+            options: ["INFO", "ERROR"]
           },
           sortable: true
         },
@@ -50,11 +60,21 @@ export default function() {
           label: "Account",
           field: "account",
           align: "left",
+          editor: false,
           sortable: false
         },
         {
           name: "created",
           label: "Created",
+          field: "created_at",
+          align: "left",
+          type: "timeago",
+          settings: { autoUpdate: false },
+          sortable: true
+        },
+        {
+          name: "actions",
+          label: "#",
           field: "created_at",
           align: "left",
           type: "timeago",
