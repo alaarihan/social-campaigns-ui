@@ -15,7 +15,7 @@
             <table-cell
               v-if="props.col.type === 'badge'"
               :props="finalProps(props)"
-              :show-editor="false"
+              :show-editor="pageSettings.popupEditing"
               v-model="props.value"
             >
             </table-cell>

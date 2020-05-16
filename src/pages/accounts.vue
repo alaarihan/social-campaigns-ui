@@ -6,7 +6,7 @@
           :cols="$store.state.appStore.accounts.columns"
           :gql-queries="gqlQueries"
           model-name="account"
-          :show-filters="true"
+          :show-filters="pageSettings.filters"
           :show-popup-editors="pageSettings.popupEditing"
           :show-bulk-actions="pageSettings.bulkActions"
           :show-row-actions="pageSettings.rowActions"
@@ -15,7 +15,7 @@
             <table-cell
               v-if="props.col.type === 'badge'"
               :props="finalProps(props)"
-              :show-editor="false"
+              :show-editor="pageSettings.popupEditing"
               v-model="props.value"
             >
             </table-cell>
