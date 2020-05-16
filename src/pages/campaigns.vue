@@ -35,6 +35,22 @@
               </q-menu>
             </q-btn>
           </template>
+          <template v-slot:before-bulk-actions="{ props }">
+            <q-btn
+              color="primary"
+              icon="send"
+              label="Start"
+              no-caps
+              @click="startCampaigns(props)"
+            />
+            <q-btn
+              color="primary"
+              icon="pan_tool"
+              label="Cancel"
+              no-caps
+              @click="cancelCampaigns(props)"
+            />
+          </template>
         </hasura-datatable>
       </q-card-section>
     </q-card>
@@ -137,27 +153,41 @@ export default {
         finalProps.col.settings.color = "green";
       } else if (finalProps.value === "COMPLETED") {
         finalProps.col.settings.color = "blue";
+      } else if (finalProps.value === "PENDING") {
+        finalProps.col.settings.color = "yellow";
       }
+
       return finalProps;
     },
     startCampaign(props) {
       const id = props.row.id;
       const data = { status: "PENDING", progress: 0, repeated: 0 };
-      this.updateCampaign(id, data);
+      this.updateCampaigns(id, data);
     },
     cancelCampaign(props) {
       const id = props.row.id;
       const data = { status: "CANCEL" };
-      this.updateCampaign(id, data);
+      this.updateCampaigns(id, data);
     },
-    updateCampaign(id, data) {
+    startCampaigns(selected) {
+      const ids = selected.map(item => item.id);
+      const data = { status: "PENDING", progress: 0, repeated: 0 };
+      this.updateCampaigns(ids, data);
+    },
+    cancelCampaigns(selected) {
+      const ids = selected.map(item => item.id);
+      const data = { status: "CANCEL" };
+      this.updateCampaigns(ids, data);
+    },
+    updateCampaigns(id, data) {
+      const op = id && Array.isArray(id) ? "_in" : "_eq";
       this.$apollo
         .mutate({
           // Query
           mutation: CAMPAIGN_UPDATE,
           // Parameters
           variables: {
-            where: { id: { _eq: id } },
+            where: { id: { [op]: id } },
             _set: data
           }
         })

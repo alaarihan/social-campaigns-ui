@@ -15,15 +15,19 @@
     @request="onRequest"
   >
     <template v-if="showBulkActions" v-slot:top-selection>
-      <slot name="bulkActions">
-        <q-btn
-          color="red"
-          icon="delete"
-          label="Delete"
-          no-caps
-          @click="deleteSelected"
-        />
-      </slot>
+      <div class="q-pa-md q-gutter-sm">
+        <slot name="bulkActions">
+          <slot name="before-bulk-actions" :props="selected"> </slot>
+          <q-btn
+            color="red"
+            icon="delete"
+            label="Delete"
+            no-caps
+            @click="deleteSelected"
+          />
+          <slot name="after-bulk-actions" :props="selected"> </slot>
+        </slot>
+      </div>
     </template>
     <template v-slot:header-cell-id="props">
       <q-th :props="props" auto-width class="th-id">
