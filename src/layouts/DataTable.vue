@@ -71,9 +71,12 @@ export default {
     };
   },
   computed: {
+    pageSettings(){
+      return this.$store.state.appStore.page.settings
+    },
     popupEditing: {
       get() {
-        return this.$store.state.appStore.page.settings.popupEditing;
+        return this.pageSettings.popupEditing;
       },
       set(val) {
         this.$store.commit("appStore/setSetting", {
@@ -84,7 +87,7 @@ export default {
     },
     bulkActions: {
       get() {
-        return this.$store.state.appStore.page.settings.bulkActions;
+        return this.pageSettings.bulkActions;
       },
       set(val) {
         this.$store.commit("appStore/setSetting", {
@@ -95,7 +98,7 @@ export default {
     },
     rowActions: {
       get() {
-        return this.$store.state.appStore.page.settings.rowActions;
+        return this.pageSettings.rowActions;
       },
       set(val) {
         this.$store.commit("appStore/setSetting", {

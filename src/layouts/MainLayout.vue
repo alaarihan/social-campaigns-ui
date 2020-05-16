@@ -56,6 +56,10 @@
 <script>
 export default {
   name: "MainLayout",
+  meta: {
+      titleTemplate: title => `${title} - Social Campaigns`,
+
+    },
   data() {
     return {
       leftDrawerOpen: false,

@@ -43,6 +43,9 @@ const LOGS_QUERY = gql`
 `;
 export default {
   name: "Logs",
+   meta: {
+    title: 'Live Logs',
+  },
   components: { TableCell },
   apollo: {
     log: {

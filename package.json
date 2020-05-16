@@ -2,7 +2,7 @@
   "name": "social-campaigns-ui",
   "version": "0.0.1",
   "description": "A UI To manage Social Camoaigns Data",
-  "productName": "Social Campaigns UI",
+  "productName": "Social Campaigns",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
   "author": "Alaa Rihan <alaa.addeen@gmail.com>",

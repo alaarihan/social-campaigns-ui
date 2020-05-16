@@ -7,9 +7,9 @@
           :gql-queries="gqlQueries"
           model-name="log"
           :show-filters="true"
-          :show-popup-editors="$store.state.appStore.page.settings.popupEditing"
-          :show-bulk-actions="$store.state.appStore.page.settings.bulkActions"
-          :show-row-actions="$store.state.appStore.page.settings.rowActions"
+          :show-popup-editors="pageSettings.popupEditing"
+          :show-bulk-actions="pageSettings.bulkActions"
+          :show-row-actions="pageSettings.rowActions"
         >
           <template v-slot:body-cell="{ props }">
             <table-cell
@@ -80,6 +80,9 @@ const LOGS_DELETE = gql`
 
 export default {
   name: "Logs",
+   meta: {
+    title: 'Logs',
+  },
   components: { HasuraDatatable, TableCell },
   data() {
     return {
@@ -95,6 +98,11 @@ export default {
     this.$store.commit("appStore/setPageTitle", "Logs");
     this.$store.commit("appStore/setPageName", "logs");
   },
+   computed: {
+    pageSettings(){
+      return this.$store.state.appStore.page.settings
+    },
+   },
   methods: {
     finalProps(props) {
       const finalProps = clone(props);
