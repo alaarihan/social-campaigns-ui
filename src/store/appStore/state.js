@@ -5,7 +5,7 @@ export default function() {
       name: "",
       settings: {
         popupEditing: false,
-        filters: true,
+        filters: false,
         bulkActions: true,
         rowActions: true
       }
@@ -348,6 +348,38 @@ export default function() {
           sortable: true
         },
         {
+          name: "status",
+          label: "Status",
+          field: "status",
+          align: "left",
+          type: "badge",
+          settings: { color: "grey" },
+          filter: {
+            type: "select",
+            options: [
+              { label: "All", value: null },
+              "ACTIVE",
+              "PENDING",
+              "COMPLETED",
+              "RESTART",
+              "CANCEL",
+              "CANCELED"
+            ]
+          },
+          editor: {
+            type: "select",
+            options: [
+              "ACTIVE",
+              "PENDING",
+              "COMPLETED",
+              "RESTART",
+              "CANCEL",
+              "CANCELED"
+            ]
+          },
+          sortable: true
+        },
+        {
           name: "target",
           required: false,
           label: "Target",
@@ -362,31 +394,6 @@ export default function() {
             },
             {
               id: "target_lte",
-              label: "<=",
-              type: "number",
-              op: "_lte"
-            }
-          ],
-          editor: {
-            type: "number"
-          },
-          sortable: true
-        },
-        {
-          name: "cost_per_one",
-          required: false,
-          label: "Cost per One",
-          field: "cost_per_one",
-          align: "left",
-          filter: [
-            {
-              id: "cost_per_one_gte",
-              label: ">=",
-              type: "number",
-              op: "_gte"
-            },
-            {
-              id: "cost_per_one_lte",
               label: "<=",
               type: "number",
               op: "_lte"
@@ -421,46 +428,6 @@ export default function() {
             type: "number"
           },
           sortable: true
-        },
-        {
-          name: "status",
-          label: "Status",
-          field: "status",
-          align: "left",
-          type: "badge",
-          settings: { color: "grey" },
-          filter: {
-            type: "select",
-            options: [
-              { label: "All", value: null },
-              "ACTIVE",
-              "PENDING",
-              "COMPLETED",
-              "RESTART",
-              "CANCEL",
-              "CANCELED"
-            ]
-          },
-          editor: {
-            type: "select",
-            options: [
-              "ACTIVE",
-              "PENDING",
-              "COMPLETED",
-              "RESTART",
-              "CANCEL",
-              "CANCELED"
-            ]
-          },
-          sortable: true
-        },
-        {
-          name: "link",
-          label: "Link",
-          field: "link",
-          align: "left",
-          sortable: true,
-          filter: { op: "_eq" }
         },
         {
           name: "repeat",
@@ -511,6 +478,39 @@ export default function() {
             type: "number"
           },
           sortable: true
+        },
+        {
+          name: "cost_per_one",
+          required: false,
+          label: "Cost per One",
+          field: "cost_per_one",
+          align: "left",
+          filter: [
+            {
+              id: "cost_per_one_gte",
+              label: ">=",
+              type: "number",
+              op: "_gte"
+            },
+            {
+              id: "cost_per_one_lte",
+              label: "<=",
+              type: "number",
+              op: "_lte"
+            }
+          ],
+          editor: {
+            type: "number"
+          },
+          sortable: true
+        },
+        {
+          name: "link",
+          label: "Link",
+          field: "link",
+          align: "left",
+          sortable: true,
+          filter: { op: "_eq" }
         },
         {
           name: "overwrite",
