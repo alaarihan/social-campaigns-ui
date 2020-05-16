@@ -74,6 +74,15 @@ export default function() {
           sortable: false
         },
         {
+          name: "host_name",
+          label: "Host",
+          field: "host_name",
+          align: "left",
+          type: "text",
+          filter: { op: "_eq" },
+          sortable: true
+        },
+        {
           name: "created",
           label: "Created",
           field: "created_at",

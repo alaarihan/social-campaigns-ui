@@ -37,6 +37,7 @@ const LOGS_QUERY = gql`
         id
         username
       }
+      host_name
       created_at
     }
   }
@@ -67,6 +68,7 @@ export default {
                 id
                 username
               }
+              host_name
               created_at
             }
           }
