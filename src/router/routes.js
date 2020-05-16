@@ -10,7 +10,10 @@ const routes = [
   {
     path: "/",
     component: () => import("layouts/DataTable.vue"),
-    children: [{ path: "logs", component: () => import("pages/logs.vue") }]
+    children: [
+      { path: "accounts", component: () => import("pages/accounts.vue") },
+      { path: "logs", component: () => import("pages/logs.vue") }
+    ]
   }
 ];
 

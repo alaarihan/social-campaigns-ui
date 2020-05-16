@@ -57,9 +57,8 @@
 export default {
   name: "MainLayout",
   meta: {
-      titleTemplate: title => `${title} - Social Campaigns`,
-
-    },
+    titleTemplate: title => `${title} - Social Campaigns`
+  },
   data() {
     return {
       leftDrawerOpen: false,
@@ -67,19 +66,25 @@ export default {
         {
           title: "Home",
           caption: "home",
-          icon: "school",
+          icon: "home",
           link: "/#"
+        },
+        {
+          title: "Accounts",
+          caption: "accounts",
+          icon: "people",
+          link: "/accounts"
         },
         {
           title: "Live Logs",
           caption: "live-logs",
-          icon: "code",
+          icon: "history",
           link: "/live-logs"
         },
         {
           title: "Logs",
           caption: "logs",
-          icon: "code",
+          icon: "history",
           link: "/logs"
         }
       ]
