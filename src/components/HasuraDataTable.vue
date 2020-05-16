@@ -63,9 +63,7 @@
           :props="props"
         >
           <slot name="actions" :props="props">
-            <slot name="before-actions" :props="props">
-
-            </slot>
+            <slot name="before-actions" :props="props"> </slot>
             <q-btn
               v-if="props.col.actions && props.col.actions.includes('delete')"
               round
@@ -78,9 +76,7 @@
                 >Delete</q-tooltip
               >
             </q-btn>
-            <slot name="after-actions" :props="props">
-                
-            </slot>
+            <slot name="after-actions" :props="props"> </slot>
           </slot>
         </q-td>
         <table-cell
@@ -258,12 +254,19 @@ export default {
         })
         .then(data => {
           // Result
-          console.log(data);
+          this.$store.dispatch("appStore/showNotifcation", {
+            message: "Updated successfully",
+            type: "INFO"
+          });
           this.$apollo.queries.data.refetch();
         })
         .catch(error => {
           // Error
           console.error(error);
+          this.$store.dispatch("appStore/showNotifcation", {
+            message: `Something wrong happened!, ${error.message}`,
+            type: "ERROR"
+          });
         });
     },
     deleteItem(id) {
@@ -278,12 +281,20 @@ export default {
         })
         .then(data => {
           // Result
+          this.$store.dispatch("appStore/showNotifcation", {
+            message: "Deleted successfully",
+            type: "INFO"
+          });
           this.$apollo.queries.data.refetch();
           this.selected = [];
         })
         .catch(error => {
           // Error
           console.error(error);
+          this.$store.dispatch("appStore/showNotifcation", {
+            message: `Something wrong happened!, ${error.message}`,
+            type: "ERROR"
+          });
         });
     },
     deleteItems(ids) {
@@ -298,10 +309,20 @@ export default {
         })
         .then(data => {
           // Result
+          const deletedItemsNumber =
+            data.data[`delete_${this.modelName}`].affected_rows;
+          this.$store.dispatch("appStore/showNotifcation", {
+            message: `${deletedItemsNumber} items deleted successfully`,
+            type: "INFO"
+          });
           this.$apollo.queries.data.refetch();
           this.selected = [];
         })
         .catch(error => {
+          this.$store.dispatch("appStore/showNotifcation", {
+            message: `Something wrong happened!, ${error.message}`,
+            type: "ERROR"
+          });
           // Error
           console.error(error);
         });

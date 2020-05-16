@@ -163,10 +163,17 @@ export default {
         })
         .then(data => {
           // Result
-          console.log(data);
+          this.$store.dispatch("appStore/showNotifcation", {
+            message: "Campaign updated successfully",
+            type: "INFO"
+          });
         })
         .catch(error => {
           // Error
+          this.$store.dispatch("appStore/showNotifcation", {
+            message: "Something wrong happened!",
+            type: "ERROR"
+          });
           console.error(error);
         });
     }
