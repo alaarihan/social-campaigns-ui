@@ -6,7 +6,7 @@
           :cols="$store.state.appStore.logs.columns"
           :gql-queries="gqlQueries"
           model-name="log"
-          :show-filters="true"
+          :show-filters="pageSettings.filters"
           :show-popup-editors="pageSettings.popupEditing"
           :show-bulk-actions="pageSettings.bulkActions"
           :show-row-actions="pageSettings.rowActions"

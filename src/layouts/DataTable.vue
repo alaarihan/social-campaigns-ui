@@ -33,6 +33,10 @@
                       v-model="popupEditing"
                       label="Enable popup editing"
                     />
+                    <q-toggle
+                      v-model="filters"
+                      label="Show filters"
+                    />
                     <q-toggle v-model="rowActions" label="Enable Row Actions" />
                     <q-toggle
                       v-model="bulkActions"
@@ -81,6 +85,17 @@ export default {
       set(val) {
         this.$store.commit("appStore/setSetting", {
           setting: "popupEditing",
+          value: val
+        });
+      }
+    },
+     filters: {
+      get() {
+        return this.pageSettings.filters;
+      },
+      set(val) {
+        this.$store.commit("appStore/setSetting", {
+          setting: "filters",
           value: val
         });
       }

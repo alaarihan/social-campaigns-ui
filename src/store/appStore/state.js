@@ -5,6 +5,7 @@ export default function() {
       name: "",
       settings: {
         popupEditing: false,
+        filters: true,
         bulkActions: true,
         rowActions: true
       }
