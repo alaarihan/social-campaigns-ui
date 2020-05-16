@@ -1,6 +1,16 @@
 export default function() {
   return {
+    page: {
+      title: "Social Campaigns",
+      name: "",
+      settings: {
+        popupEditing: false,
+        bulkActions: true,
+        rowActions: true
+      }
+    },
     logs: {
+      settings: {},
       columns: [
         {
           name: "id",
@@ -75,10 +85,10 @@ export default function() {
         {
           name: "actions",
           label: "#",
-          field: "created_at",
+          field: "id",
           align: "left",
-          type: "timeago",
-          settings: { autoUpdate: false },
+          type: "actions",
+          actions: ["edit", "delete"],
           sortable: true
         }
       ]

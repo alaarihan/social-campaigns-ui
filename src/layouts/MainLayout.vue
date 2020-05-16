@@ -1,4 +1,3 @@
-
 <template>
   <q-layout view="hHh LpR fFf">
     <q-header elevated>
@@ -11,12 +10,12 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-
         <q-toolbar-title>
-          Social Campaigns
+          <slot name="page-title">
+            {{ $store.state.appStore.page.title }}
+          </slot>
         </q-toolbar-title>
-
-        <div>v{{ $q.version }}</div>
+        <slot name="page-menu"> </slot>
       </q-toolbar>
     </q-header>
 
@@ -27,15 +26,16 @@
       content-class="bg-grey-1"
     >
       <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
+        <q-item-label header class="text-grey-8">
           Menu
         </q-item-label>
-        <q-item v-for="link in menuLinks"
+        <q-item
+          v-for="link in menuLinks"
           :key="link.title"
-          clickable v-ripple :to="link.link">
+          clickable
+          v-ripple
+          :to="link.link"
+        >
           <q-item-section avatar>
             <q-icon color="primary" :name="link.icon" />
           </q-item-section>
@@ -46,40 +46,40 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <slot name="router">
+        <router-view />
+      </slot>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-
 export default {
-  name: 'MainLayout',
-
-  data () {
+  name: "MainLayout",
+  data() {
     return {
       leftDrawerOpen: false,
       menuLinks: [
         {
-          title: 'Home',
-          caption: 'home',
-          icon: 'school',
-          link: '/#'
+          title: "Home",
+          caption: "home",
+          icon: "school",
+          link: "/#"
         },
         {
-          title: 'Live Logs',
-          caption: 'live-logs',
-          icon: 'code',
-          link: '/live-logs'
+          title: "Live Logs",
+          caption: "live-logs",
+          icon: "code",
+          link: "/live-logs"
         },
         {
-          title: 'Logs',
-          caption: 'logs',
-          icon: 'code',
-          link: '/logs'
-        },
+          title: "Logs",
+          caption: "logs",
+          icon: "code",
+          link: "/logs"
+        }
       ]
-    }
+    };
   }
-}
+};
 </script>

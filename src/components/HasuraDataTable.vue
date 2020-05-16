@@ -14,15 +14,16 @@
     ref="dataTable"
     @request="onRequest"
   >
-    <template v-slot:top-right>
-      <q-btn
-        v-if="selected && selected.length"
-        color="red"
-        icon="delete"
-        label="Delete"
-        no-caps
-        @click="deleteSelected"
-      />
+    <template v-if="showBulkActions" v-slot:top-selection>
+      <slot name="bulkActions">
+        <q-btn
+          color="red"
+          icon="delete"
+          label="Delete"
+          no-caps
+          @click="deleteSelected"
+        />
+      </slot>
     </template>
     <template v-slot:header-cell-id="props">
       <q-th :props="props" auto-width class="th-id">
@@ -56,7 +57,27 @@
     </template>
     <template v-slot:body-cell="props">
       <slot name="body-cell" :props="props">
+        <q-td
+          v-if="showRowActions && props.col.type === 'actions'"
+          :props="props"
+        >
+          <slot name="actions" :props="{ props }">
+            <q-btn
+              v-if="props.col.actions && props.col.actions.includes('delete')"
+              round
+              size="xs"
+              color="red"
+              icon="delete"
+              @click="deleteItem(props.row.id)"
+            >
+              <q-tooltip self="center middle" anchor="top middle"
+                >Delete</q-tooltip
+              >
+            </q-btn>
+          </slot>
+        </q-td>
         <table-cell
+          v-else
           :props="props"
           :show-editor="showPopupEditors"
           v-model="props.row[props.col.field]"
@@ -94,6 +115,16 @@ export default {
       required: false
     },
     showPopupEditors: {
+      type: Boolean,
+      default: true,
+      required: false
+    },
+    showRowActions: {
+      type: Boolean,
+      default: true,
+      required: false
+    },
+    showBulkActions: {
       type: Boolean,
       default: true,
       required: false
@@ -214,6 +245,26 @@ export default {
           // Result
           console.log(data);
           this.$apollo.queries.data.refetch();
+        })
+        .catch(error => {
+          // Error
+          console.error(error);
+        });
+    },
+    deleteItem(id) {
+      this.$apollo
+        .mutate({
+          // Query
+          mutation: this.gqlQueries.delete,
+          // Parameters
+          variables: {
+            where: { id: { _eq: id } }
+          }
+        })
+        .then(data => {
+          // Result
+          this.$apollo.queries.data.refetch();
+          this.selected = [];
         })
         .catch(error => {
           // Error

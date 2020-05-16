@@ -7,13 +7,15 @@
           :gql-queries="gqlQueries"
           model-name="log"
           :show-filters="true"
-          :show-popup-editors="true"
+          :show-popup-editors="$store.state.appStore.page.settings.popupEditing"
+          :show-bulk-actions="$store.state.appStore.page.settings.bulkActions"
+          :show-row-actions="$store.state.appStore.page.settings.rowActions"
         >
           <template v-slot:body-cell="{ props }">
             <table-cell
               v-if="props.col.type === 'badge'"
               :props="finalProps(props)"
-              :show-editor="true"
+              :show-editor="false"
               v-model="props.value"
             >
             </table-cell>
@@ -88,6 +90,10 @@ export default {
         delete: LOGS_DELETE
       }
     };
+  },
+  created() {
+    this.$store.commit("appStore/setPageTitle", "Logs");
+    this.$store.commit("appStore/setPageName", "logs");
   },
   methods: {
     finalProps(props) {

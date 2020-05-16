@@ -15,8 +15,7 @@
           ref="logsTable"
         >
           <template v-slot:body-cell="props">
-            <table-cell :props="finalProps(props)">
-            </table-cell>
+            <table-cell :props="finalProps(props)"> </table-cell>
           </template>
         </q-table>
       </q-card-section>
@@ -26,7 +25,7 @@
 
 <script>
 import gql from "graphql-tag";
-import clone from "clone"
+import clone from "clone";
 import TableCell from "../components/TableCell";
 const LOGS_QUERY = gql`
   query log($limit: Int, $where: log_bool_exp) {
@@ -44,7 +43,7 @@ const LOGS_QUERY = gql`
 `;
 export default {
   name: "Logs",
-  components: {TableCell},
+  components: { TableCell },
   apollo: {
     log: {
       query: LOGS_QUERY,
@@ -88,7 +87,9 @@ export default {
     return {};
   },
   watch: {},
-  created() {},
+  created() {
+    this.$store.commit("appStore/setPageTitle", "Live Logs");
+  },
   computed: {
     cursor() {
       if (this.log && this.log.length) {
@@ -131,12 +132,12 @@ export default {
       }
     },
     finalProps(props) {
-      const finalProps = clone(props)
-      if(finalProps.col.type === 'badge' && finalProps.value === 'ERROR'){
-        finalProps.col.settings.color = 'red'
+      const finalProps = clone(props);
+      if (finalProps.col.type === "badge" && finalProps.value === "ERROR") {
+        finalProps.col.settings.color = "red";
       }
-      if(finalProps.col.type === 'timeago'){
-        finalProps.col.settings.autoUpdate = 5
+      if (finalProps.col.type === "timeago") {
+        finalProps.col.settings.autoUpdate = 5;
       }
       return finalProps;
     }
