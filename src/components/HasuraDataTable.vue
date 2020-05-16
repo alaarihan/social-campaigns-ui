@@ -62,7 +62,10 @@
           v-if="showRowActions && props.col.type === 'actions'"
           :props="props"
         >
-          <slot name="actions" :props="{ props }">
+          <slot name="actions" :props="props">
+            <slot name="before-actions" :props="props">
+
+            </slot>
             <q-btn
               v-if="props.col.actions && props.col.actions.includes('delete')"
               round
@@ -75,6 +78,9 @@
                 >Delete</q-tooltip
               >
             </q-btn>
+            <slot name="after-actions" :props="props">
+                
+            </slot>
           </slot>
         </q-td>
         <table-cell

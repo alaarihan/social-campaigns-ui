@@ -553,7 +553,7 @@ export default function() {
           field: "id",
           align: "left",
           type: "actions",
-          actions: ["edit", "delete"],
+          actions: ["edit"],
           sortable: true
         }
       ]

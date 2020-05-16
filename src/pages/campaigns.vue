@@ -20,6 +20,21 @@
             >
             </table-cell>
           </template>
+          <template v-slot:after-actions="{ props }">
+            <q-btn round size="xs" color="primary" icon="settings">
+              <q-menu auto-close>
+                <q-list style="min-width: 100px">
+                  <q-item clickable @click="startCampaign(props)">
+                    <q-item-section>Start</q-item-section>
+                  </q-item>
+                  <q-separator />
+                  <q-item clickable @click="cancelCampaign(props)">
+                    <q-item-section>Cancel</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </template>
         </hasura-datatable>
       </q-card-section>
     </q-card>
@@ -78,7 +93,6 @@ const CAMPAIGN_UPDATE = gql`
       affected_rows
       returning {
         id
-        message
       }
     }
   }
@@ -125,6 +139,36 @@ export default {
         finalProps.col.settings.color = "blue";
       }
       return finalProps;
+    },
+    startCampaign(props) {
+      const id = props.row.id;
+      const data = { status: "PENDING", progress: 0, repeated: 0 };
+      this.updateCampaign(id, data);
+    },
+    cancelCampaign(props) {
+      const id = props.row.id;
+      const data = { status: "CANCEL" };
+      this.updateCampaign(id, data);
+    },
+    updateCampaign(id, data) {
+      this.$apollo
+        .mutate({
+          // Query
+          mutation: CAMPAIGN_UPDATE,
+          // Parameters
+          variables: {
+            where: { id: { _eq: id } },
+            _set: data
+          }
+        })
+        .then(data => {
+          // Result
+          console.log(data);
+        })
+        .catch(error => {
+          // Error
+          console.error(error);
+        });
     }
   }
 };
