@@ -1,6 +1,6 @@
 <template>
   <q-select
-    v-if="col.filter && col.filter.type === 'select'"
+    v-if="filter && filter.type === 'select'"
     v-model="model"
     filled
     dense
@@ -10,11 +10,10 @@
     @input="$emit('input', model)"
   />
   <q-input
-    v-else-if="col.filter && col.filter.type === 'number'"
+    v-else-if="filter && filter.type === 'number'"
     v-model.number="model"
     filled
     dense
-    clearable
     :label="label"
     type="number"
     :debounce="400"
@@ -37,7 +36,7 @@ export default {
   name: "ColumnFilter",
   props: {
     value: {
-      type: String
+      type: [String, Number]
     },
     filter: {
       type: Object,

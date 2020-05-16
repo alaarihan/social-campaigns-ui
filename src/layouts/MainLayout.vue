@@ -76,6 +76,12 @@ export default {
           link: "/accounts"
         },
         {
+          title: "Campaigns",
+          caption: "campaigns",
+          icon: "list",
+          link: "/campaigns"
+        },
+        {
           title: "Live Logs",
           caption: "live-logs",
           icon: "history",

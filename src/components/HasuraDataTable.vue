@@ -46,6 +46,7 @@
           >
             <div v-for="filter in col.filter" :key="filter.id">
               <column-filter
+                class="number-filter-input"
                 :col="col"
                 :filter="filter"
                 v-model="colsFilters[filter.id]"
@@ -208,15 +209,23 @@ export default {
           }
         }
         const op = col.filter.op ? col.filter.op : "_eq";
-        if (filter[1]) {
+        if (this.colsFilters[filter[0]]) {
           if (!activeFilter[col.field]) {
             activeFilter[col.field] = {};
           }
           activeFilter[col.field][op] =
-            op === "_ilike" ? `%${filter[1]}%` : filter[1];
+            op === "_ilike"
+              ? `%${this.colsFilters[filter[0]]}%`
+              : this.colsFilters[filter[0]];
         }
 
-        return { [col.field]: { [op]: filter[1] ? filter[1] : null } };
+        return {
+          [col.field]: {
+            [op]: this.colsFilters[filter[0]]
+              ? this.colsFilters[filter[0]]
+              : null
+          }
+        };
       });
       return activeFilter;
     }
@@ -301,8 +310,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .th-id {
   min-width: 150px;
+}
+.number-filter-input {
+  min-width: 60px;
 }
 </style>

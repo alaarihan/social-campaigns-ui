@@ -192,13 +192,13 @@ export default function() {
           align: "left",
           filter: [
             {
-              id: "id_gte",
+              id: "status_duration_gte",
               label: ">=",
               type: "number",
               op: "_gte"
             },
             {
-              id: "id_lte",
+              id: "status_duration_lte",
               label: "<=",
               type: "number",
               op: "_lte"
@@ -217,13 +217,13 @@ export default function() {
           align: "left",
           filter: [
             {
-              id: "id_gte",
+              id: "credit_gte",
               label: ">=",
               type: "number",
               op: "_gte"
             },
             {
-              id: "id_lte",
+              id: "credit_lte",
               label: "<=",
               type: "number",
               op: "_lte"
@@ -253,6 +253,280 @@ export default function() {
           editor: {
             type: "textarea"
           }
+        },
+        {
+          name: "created_at",
+          label: "Created",
+          field: "created_at",
+          align: "left",
+          type: "timeago",
+          settings: { autoUpdate: false },
+          sortable: true
+        },
+        {
+          name: "updated_at",
+          label: "Updated",
+          field: "updated_at",
+          align: "left",
+          type: "timeago",
+          settings: { autoUpdate: false },
+          sortable: true
+        },
+        {
+          name: "actions",
+          label: "#",
+          field: "id",
+          align: "left",
+          type: "actions",
+          actions: ["edit", "delete"],
+          sortable: true
+        }
+      ]
+    },
+    campaigns: {
+      columns: [
+        {
+          name: "id",
+          required: true,
+          label: "#",
+          field: "id",
+          align: "left",
+          filter: [
+            {
+              id: "id_gte",
+              label: ">=",
+              type: "number",
+              op: "_gte"
+            },
+            {
+              id: "id_lte",
+              label: "<=",
+              type: "number",
+              op: "_lte"
+            }
+          ],
+          editor: {
+            type: "number"
+          },
+          sortable: true
+        },
+        {
+          name: "name",
+          label: "Name",
+          field: "name",
+          align: "left",
+          sortable: true,
+          filter: { op: "_ilike" }
+        },
+        {
+          name: "type",
+          label: "Type",
+          field: "type",
+          align: "left",
+          type: "badge",
+          settings: { color: "grey" },
+          filter: {
+            type: "select",
+            options: [
+              { label: "All", value: null },
+              "YOUTUBE_VIEWS",
+              "YOUTUBE_LIKES",
+              "YOUTUBE_COMMENTS",
+              "YOUTUBE_SUBSCRIBES"
+            ]
+          },
+          editor: {
+            type: "select",
+            options: [
+              "YOUTUBE_VIEWS",
+              "YOUTUBE_LIKES",
+              "YOUTUBE_COMMENTS",
+              "YOUTUBE_SUBSCRIBES"
+            ]
+          },
+          sortable: true
+        },
+        {
+          name: "target",
+          required: false,
+          label: "Target",
+          field: "target",
+          align: "left",
+          filter: [
+            {
+              id: "target_gte",
+              label: ">=",
+              type: "number",
+              op: "_gte"
+            },
+            {
+              id: "target_lte",
+              label: "<=",
+              type: "number",
+              op: "_lte"
+            }
+          ],
+          editor: {
+            type: "number"
+          },
+          sortable: true
+        },
+        {
+          name: "cost_per_one",
+          required: false,
+          label: "Cost per One",
+          field: "cost_per_one",
+          align: "left",
+          filter: [
+            {
+              id: "cost_per_one_gte",
+              label: ">=",
+              type: "number",
+              op: "_gte"
+            },
+            {
+              id: "cost_per_one_lte",
+              label: "<=",
+              type: "number",
+              op: "_lte"
+            }
+          ],
+          editor: {
+            type: "number"
+          },
+          sortable: true
+        },
+        {
+          name: "progress",
+          required: false,
+          label: "Progress",
+          field: "progress",
+          align: "left",
+          filter: [
+            {
+              id: "progress_gte",
+              label: ">=",
+              type: "number",
+              op: "_gte"
+            },
+            {
+              id: "progress_lte",
+              label: "<=",
+              type: "number",
+              op: "_lte"
+            }
+          ],
+          editor: {
+            type: "number"
+          },
+          sortable: true
+        },
+        {
+          name: "status",
+          label: "Status",
+          field: "status",
+          align: "left",
+          type: "badge",
+          settings: { color: "grey" },
+          filter: {
+            type: "select",
+            options: [
+              { label: "All", value: null },
+              "ACTIVE",
+              "PENDING",
+              "COMPLETED",
+              "RESTART",
+              "CANCEL",
+              "CANCELED"
+            ]
+          },
+          editor: {
+            type: "select",
+            options: [
+              "ACTIVE",
+              "PENDING",
+              "COMPLETED",
+              "RESTART",
+              "CANCEL",
+              "CANCELED"
+            ]
+          },
+          sortable: true
+        },
+        {
+          name: "link",
+          label: "Link",
+          field: "link",
+          align: "left",
+          sortable: true,
+          filter: { op: "_eq" }
+        },
+        {
+          name: "repeat",
+          required: false,
+          label: "Repeat",
+          field: "repeat",
+          align: "left",
+          filter: [
+            {
+              id: "repeat_gte",
+              label: ">=",
+              type: "number",
+              op: "_gte"
+            },
+            {
+              id: "repeat_lte",
+              label: "<=",
+              type: "number",
+              op: "_lte"
+            }
+          ],
+          editor: {
+            type: "number"
+          },
+          sortable: true
+        },
+        {
+          name: "repeated",
+          required: false,
+          label: "Repeated",
+          field: "repeated",
+          align: "left",
+          filter: [
+            {
+              id: "repeated_gte",
+              label: ">=",
+              type: "number",
+              op: "_gte"
+            },
+            {
+              id: "repeated_lte",
+              label: "<=",
+              type: "number",
+              op: "_lte"
+            }
+          ],
+          editor: {
+            type: "number"
+          },
+          sortable: true
+        },
+        {
+          name: "overwrite",
+          label: "Overwrite",
+          field: "overwrite",
+          align: "left",
+          type: "badge",
+          settings: { color: "grey" },
+          filter: {
+            type: "select",
+            options: [{ label: "All", value: null }, "yes", "no"]
+          },
+          editor: {
+            type: "select",
+            options: ["yes", "no"]
+          },
+          sortable: true
         },
         {
           name: "created_at",
