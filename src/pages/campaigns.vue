@@ -78,6 +78,8 @@ const CAMPAIGNS_QUERY = gql`
       id
       name
       type
+      limited
+      accounts_number
       target
       status
       progress

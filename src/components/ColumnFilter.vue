@@ -7,6 +7,7 @@
     :options="col.filter.options"
     :label="label"
     emit-value
+    map-options
     @input="$emit('input', model)"
   />
   <q-input

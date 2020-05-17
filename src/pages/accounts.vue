@@ -45,6 +45,7 @@ const ACCOUNTS_QUERY = gql`
       offset: $offset
     ) {
       id
+      campaign_id
       username
       password
       email

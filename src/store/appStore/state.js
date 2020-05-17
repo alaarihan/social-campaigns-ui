@@ -130,6 +130,20 @@ export default function() {
           sortable: true
         },
         {
+          name: "campaign_id",
+          label: "campaign #",
+          field: "campaign_id",
+          align: "left",
+          sortable: true,
+          filter: {
+            type: "number",
+            op: "_eq"
+          },
+          editor: {
+            type: "number"
+          }
+        },
+        {
           name: "username",
           label: "User Name",
           field: "username",
@@ -378,6 +392,43 @@ export default function() {
             ]
           },
           sortable: true
+        },
+        {
+          name: "limited",
+          label: "Limited",
+          field: "limited",
+          align: "left",
+          sortable: true,
+          format: val => (val ? "Yes" : "No"),
+          filter: {
+            type: "select",
+            options: [
+              { label: "All", value: null },
+              { label: "Yes", value: true },
+              { label: "No", value: false }
+            ]
+          },
+          editor: {
+            type: "select",
+            options: [
+              { label: "Yes", value: true },
+              { label: "No", value: false }
+            ]
+          }
+        },
+        {
+          name: "accounts_number",
+          label: "Accounts #",
+          field: "accounts_number",
+          align: "left",
+          sortable: true,
+          filter: {
+            type: "number",
+            op: "_eq"
+          },
+          editor: {
+            type: "number"
+          }
         },
         {
           name: "target",

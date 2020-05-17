@@ -8,6 +8,7 @@
       :options="col.editor.options"
       :label="label"
       emit-value
+      map-options
     />
     <q-input
       v-else-if="col.editor && col.editor.type === 'number'"
