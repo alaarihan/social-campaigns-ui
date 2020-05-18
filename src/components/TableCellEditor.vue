@@ -1,5 +1,5 @@
 <template>
-  <q-popup-edit v-model="model" buttons @save="$emit('input', model)">
+  <q-popup-edit v-model="model" buttons separate-close-popup @save="$emit('input', model)">
     <q-select
       v-if="col.editor && col.editor.type === 'select'"
       v-model="model"
