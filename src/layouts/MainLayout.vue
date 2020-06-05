@@ -67,7 +67,7 @@ export default {
           title: "Home",
           caption: "home",
           icon: "home",
-          link: "/#"
+          link: "/"
         },
         {
           title: "Accounts",
