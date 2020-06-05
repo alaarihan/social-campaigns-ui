@@ -1,7 +1,7 @@
-import { link } from "./customLink";
+import { customLink } from "./customLink";
 
 export function apolloClientBeforeCreate({ apolloClientConfigObj }) {
-  apolloClientConfigObj.link = link;
+  apolloClientConfigObj.link = customLink;
   // if needed you can modify here the config object used for apollo client
   // instantiation
 }

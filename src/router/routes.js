@@ -15,7 +15,14 @@ const routes = [
       { path: "campaigns", component: () => import("pages/campaigns.vue") },
       { path: "logs", component: () => import("pages/logs.vue") }
     ]
-  }
+  },
+  {
+    path: "/auth/",
+    component: () => import("layouts/login.vue"),
+    children: [
+      { path: "login", component: () => import("pages/login.vue") },
+    ]
+  },
 ];
 
 // Always leave this as last one
