@@ -5,34 +5,28 @@ import { getMainDefinition } from "apollo-utilities";
 import fetch from "node-fetch";
 import { w3cwebsocket } from "websocket";
 
-import { getJWTToken } from '../js/auth';
+import { getJWTToken } from "../js/auth";
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
   operation.setContext({
     headers: {
-      authorization: `Bearer ${getJWTToken()}` || null,
+      authorization: `Bearer ${getJWTToken()}` || null
     }
   });
 
   return forward(operation);
-})
+});
 
-const headers = {};
+const headers = { authorization: `Bearer ${getJWTToken()}` || null };
 const onServer = process.env.SERVER;
 const httpLinkConfig = {
-  uri:
-    "https://" +
-    (process.env.GRAPHQL_URI ||
-      "main-jpp5zbs80rp4e46g-gtw.qovery.io/v1/graphql"),
+  uri: "https://" + process.env.GRAPHQL_URI,
   headers
 };
 
 const wsLinkConfig = {
-  uri:
-    "wss://" +
-    (process.env.GRAPHQL_URI ||
-      "main-jpp5zbs80rp4e46g-gtw.qovery.io/v1/graphql"),
+  uri: "wss://" + process.env.GRAPHQL_URI,
   options: {
     reconnect: true,
     connectionParams: {
@@ -64,6 +58,6 @@ const link = split(
   httpLink
 );
 
-const customLink = authMiddleware.concat(link)
+const customLink = authMiddleware.concat(link);
 
-export { customLink }
+export { customLink };
