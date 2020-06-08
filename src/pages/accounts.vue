@@ -11,15 +11,6 @@
           :show-bulk-actions="pageSettings.bulkActions"
           :show-row-actions="pageSettings.rowActions"
         >
-          <template v-slot:body-cell="{ props }">
-            <table-cell
-              v-if="props.col.type === 'badge'"
-              :props="finalProps(props)"
-              :show-editor="pageSettings.popupEditing"
-              v-model="props.value"
-            >
-            </table-cell>
-          </template>
         </hasura-datatable>
       </q-card-section>
     </q-card>
@@ -30,7 +21,6 @@
 import gql from "graphql-tag";
 import clone from "clone";
 import HasuraDatatable from "../components/HasuraDataTable";
-import TableCell from "../components/TableCell";
 const ACCOUNTS_QUERY = gql`
   query account(
     $limit: Int
@@ -92,7 +82,7 @@ export default {
   meta: {
     title: "Accounts"
   },
-  components: { HasuraDatatable, TableCell },
+  components: { HasuraDatatable },
   data() {
     return {
       gqlQueries: {
@@ -110,28 +100,6 @@ export default {
   computed: {
     pageSettings() {
       return this.$store.state.appStore.page.settings;
-    }
-  },
-  methods: {
-    finalProps(props) {
-      const finalProps = clone(props);
-      switch (finalProps.value) {
-        case "ONLINE":
-          finalProps.col.settings.color = "green";
-          break;
-        case "YV_SUSPENDED":
-          finalProps.col.settings.color = "deep-orange";
-          break;
-
-        case "BLOCKED" || "SUSPENDED":
-          finalProps.col.settings.color = "red";
-          break;
-
-        default:
-          break;
-      }
-
-      return finalProps;
     }
   }
 };

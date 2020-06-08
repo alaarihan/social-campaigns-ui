@@ -173,7 +173,30 @@ export default function() {
           field: "status",
           align: "left",
           type: "badge",
-          settings: { color: "grey" },
+          settings: {
+            color: [
+              {
+                value: "_default",
+                color: "grey"
+              },
+              {
+                value: "ONLINE",
+                color: "green"
+              },
+              {
+                value: "BLOCKED",
+                color: "red"
+              },
+              {
+                value: "SUSPENDED",
+                color: "red"
+              },
+              {
+                value: "YV_SUSPENDED",
+                color: "deep-orange"
+              }
+            ]
+          },
           filter: {
             type: "select",
             options: [
@@ -367,7 +390,26 @@ export default function() {
           field: "status",
           align: "left",
           type: "badge",
-          settings: { color: "grey" },
+          settings: {
+            color: [
+              {
+                value: "_default",
+                color: "grey"
+              },
+              {
+                value: "ACTIVE",
+                color: "green"
+              },
+              {
+                value: "COMPLETED",
+                color: "blue"
+              },
+              {
+                value: "PENDING",
+                color: "yellow"
+              }
+            ]
+          },
           filter: {
             type: "select",
             options: [

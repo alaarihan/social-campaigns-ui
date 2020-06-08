@@ -11,15 +11,6 @@
           :show-bulk-actions="pageSettings.bulkActions"
           :show-row-actions="pageSettings.rowActions"
         >
-          <template v-slot:body-cell="{ props }">
-            <table-cell
-              v-if="props.col.type === 'badge'"
-              :props="finalProps(props)"
-              :show-editor="pageSettings.popupEditing"
-              v-model="props.value"
-            >
-            </table-cell>
-          </template>
           <template v-slot:after-actions="{ props }">
             <q-btn round size="xs" color="primary" icon="settings">
               <q-menu auto-close>
@@ -61,7 +52,6 @@
 import gql from "graphql-tag";
 import clone from "clone";
 import HasuraDatatable from "../components/HasuraDataTable";
-import TableCell from "../components/TableCell";
 const CAMPAIGNS_QUERY = gql`
   query campaign(
     $limit: Int
@@ -128,7 +118,7 @@ export default {
   meta: {
     title: "Campaigns"
   },
-  components: { HasuraDatatable, TableCell },
+  components: { HasuraDatatable },
   data() {
     return {
       gqlQueries: {
@@ -149,18 +139,6 @@ export default {
     }
   },
   methods: {
-    finalProps(props) {
-      const finalProps = clone(props);
-      if (finalProps.value === "ACTIVE") {
-        finalProps.col.settings.color = "green";
-      } else if (finalProps.value === "COMPLETED") {
-        finalProps.col.settings.color = "blue";
-      } else if (finalProps.value === "PENDING") {
-        finalProps.col.settings.color = "yellow";
-      }
-
-      return finalProps;
-    },
     startCampaign(props) {
       const id = props.row.id;
       const data = { status: "PENDING", progress: 0, repeated: 0 };

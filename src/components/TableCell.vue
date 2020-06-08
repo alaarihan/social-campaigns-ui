@@ -7,7 +7,7 @@
     />
     <q-badge
       v-else-if="props.col.type === 'badge'"
-      :color="props.col.settings.color"
+      :color="badgeColor(props)"
     >
       {{ props.value }}
     </q-badge>
@@ -49,6 +49,22 @@ export default {
   },
   created() {
     this.model = this.value;
+  },
+  methods: {
+    badgeColor(props){
+      if(Array.isArray(props.col.settings.color)){
+        const colorObject = props.col.settings.color.find(obj => obj.value === props.value)
+        if(colorObject && colorObject.color){
+          return colorObject.color
+        }else{
+          const defaultColorObject = props.col.settings.color.find(obj => obj.value === '_default')
+          if(defaultColorObject){
+            return defaultColorObject.color
+          }
+        }
+      }
+      return props.col.settings.color
+    }
   }
 };
 </script>
