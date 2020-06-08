@@ -79,12 +79,10 @@ export default {
             variables: this.login.body
           })
           .then(res => {
-            console.log(res);
             Cookies.set("token", res.data.login.jwt_token, {
               expires: `${res.data.login.jwt_expires_in / 1000}s`,
-              secure: true
+              path: "/"
             });
-            console.log(res);
             this.$router.push("/");
           })
           .catch(error => {
