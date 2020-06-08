@@ -105,7 +105,6 @@ export default {
   },
   methods: {
     onLogAdded(previousResult, { subscriptionData }) {
-      console.log("called");
       if (this.cursor === 0) return;
       const newResult = {
         log: []
