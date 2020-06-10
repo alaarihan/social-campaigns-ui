@@ -54,7 +54,18 @@ export default function() {
           field: "type",
           align: "left",
           type: "badge",
-          settings: { color: "green" },
+          settings: {
+            color: [
+              {
+                value: "_default",
+                color: "green"
+              },
+              {
+                value: "ERROR",
+                color: "red"
+              }
+            ]
+          },
           filter: {
             type: "select",
             options: [{ label: "All", value: null }, "INFO", "ERROR"]

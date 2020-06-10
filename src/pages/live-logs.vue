@@ -15,7 +15,7 @@
           ref="logsTable"
         >
           <template v-slot:body-cell="props">
-            <table-cell :props="finalProps(props)"> </table-cell>
+            <table-cell :props="props" :showEditor="false"> </table-cell>
           </template>
         </q-table>
       </q-card-section>
@@ -44,8 +44,8 @@ const LOGS_QUERY = gql`
 `;
 export default {
   name: "Logs",
-   meta: {
-    title: 'Live Logs',
+  meta: {
+    title: "Live Logs"
   },
   components: { TableCell },
   apollo: {

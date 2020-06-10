@@ -11,15 +11,6 @@
           :show-bulk-actions="pageSettings.bulkActions"
           :show-row-actions="pageSettings.rowActions"
         >
-          <template v-slot:body-cell="{ props }">
-            <table-cell
-              v-if="props.col.type === 'badge'"
-              :props="finalProps(props)"
-              :show-editor="pageSettings.popupEditing"
-              v-model="props.value"
-            >
-            </table-cell>
-          </template>
         </hasura-datatable>
       </q-card-section>
     </q-card>
@@ -30,7 +21,6 @@
 import gql from "graphql-tag";
 import clone from "clone";
 import HasuraDatatable from "../components/HasuraDataTable";
-import TableCell from "../components/TableCell";
 const LOGS_QUERY = gql`
   query log(
     $limit: Int
@@ -81,10 +71,10 @@ const LOGS_DELETE = gql`
 
 export default {
   name: "Logs",
-   meta: {
-    title: 'Logs',
+  meta: {
+    title: "Logs"
   },
-  components: { HasuraDatatable, TableCell },
+  components: { HasuraDatatable },
   data() {
     return {
       gqlQueries: {
@@ -99,20 +89,12 @@ export default {
     this.$store.commit("appStore/setPageTitle", "Logs");
     this.$store.commit("appStore/setPageName", "logs");
   },
-   computed: {
-    pageSettings(){
-      return this.$store.state.appStore.page.settings
-    },
-   },
-  methods: {
-    finalProps(props) {
-      const finalProps = clone(props);
-      if (finalProps.value === "ERROR") {
-        finalProps.col.settings.color = "red";
-      }
-      return finalProps;
+  computed: {
+    pageSettings() {
+      return this.$store.state.appStore.page.settings;
     }
-  }
+  },
+  methods: {}
 };
 </script>
 
