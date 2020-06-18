@@ -33,15 +33,9 @@
                       v-model="popupEditing"
                       label="Enable popup editing"
                     />
-                    <q-toggle
-                      v-model="filters"
-                      label="Show filters"
-                    />
+                    <q-toggle v-model="filters" label="Show filters" />
                     <q-toggle v-model="rowActions" label="Enable Row Actions" />
-                    <q-toggle
-                      v-model="bulkActions"
-                      label="Enable Bulk Actions"
-                    />
+                    <q-toggle v-model="topActions" label="Show Top Actions" />
                   </div>
                 </q-tab-panel>
 
@@ -75,38 +69,45 @@ export default {
     };
   },
   computed: {
-    pageSettings(){
-      return this.$store.state.appStore.page.settings
+    activePageStore() {
+      const activePageName = this.$store.state.appStore.activePageName;
+      if (activePageName) {
+        return this.$store.state.appStore[activePageName].page;
+      }
+      return this.$store.state.appStore.page;
+    },
+    pageSettings() {
+      return this.activePageStore.settings;
     },
     popupEditing: {
       get() {
         return this.pageSettings.popupEditing;
       },
       set(val) {
-        this.$store.commit("appStore/setSetting", {
+        this.$store.commit("appStore/setPageSetting", {
           setting: "popupEditing",
           value: val
         });
       }
     },
-     filters: {
+    filters: {
       get() {
         return this.pageSettings.filters;
       },
       set(val) {
-        this.$store.commit("appStore/setSetting", {
+        this.$store.commit("appStore/setPageSetting", {
           setting: "filters",
           value: val
         });
       }
     },
-    bulkActions: {
+    topActions: {
       get() {
-        return this.pageSettings.bulkActions;
+        return this.pageSettings.topActions;
       },
       set(val) {
-        this.$store.commit("appStore/setSetting", {
-          setting: "bulkActions",
+        this.$store.commit("appStore/setPageSetting", {
+          setting: "topActions",
           value: val
         });
       }
@@ -116,7 +117,7 @@ export default {
         return this.pageSettings.rowActions;
       },
       set(val) {
-        this.$store.commit("appStore/setSetting", {
+        this.$store.commit("appStore/setPageSetting", {
           setting: "rowActions",
           value: val
         });

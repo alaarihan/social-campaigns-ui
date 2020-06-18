@@ -5,10 +5,12 @@ export function setPageName(state, name) {
     state.page.name = name;
 }
 
-export function setPageSetting(state, value) {
-    state[value.page].settings[value.setting] = value.value;
+export function setPageSetting(state, setting) {
+  const activePageName = state.activePageName || 'page'
+  const activePageStore = state[activePageName].page ? state[activePageName].page : state[activePageName]
+  activePageStore.settings[setting.setting] = setting.value;
 }
 
-export function setSetting(state, setting) {
-  state.page.settings[setting.setting] = setting.value;
+export function setActivePageName(state, name) {
+  state.activePageName = name;
 }

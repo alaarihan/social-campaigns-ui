@@ -14,18 +14,36 @@
     ref="dataTable"
     @request="onRequest"
   >
-    <template v-if="showBulkActions" v-slot:top-selection>
-      <div class="q-pa-md q-gutter-sm">
-        <slot name="bulkActions">
-          <slot name="before-bulk-actions" :props="selected"> </slot>
+    <template v-if="showTopActions" v-slot:top>
+      <div>
+        <slot name="top-actions">
+          <slot name="before-top-actions" :props="selected"> </slot>
           <q-btn
-            color="red"
-            icon="delete"
-            label="Delete"
+            color="primary"
+            icon="create"
+            label="Create"
             no-caps
-            @click="deleteSelected"
+            dense
+            @click="createItem"
+            class="q-mr-sm"
           />
-          <slot name="after-bulk-actions" :props="selected"> </slot>
+          <slot name="after-top-actions" :props="selected"> </slot>
+          <slot
+            name="bulkActions"
+            v-if="selected && selected.length"
+          >
+            <slot name="before-bulk-actions" :props="selected"> </slot>
+            <q-btn
+              color="red"
+              icon="delete"
+              label="Delete"
+              no-caps
+              dense
+              @click="confirmDelete('selected', null)"
+              class="q-mr-sm"
+            />
+            <slot name="after-bulk-actions" :props="selected"> </slot>
+          </slot>
         </slot>
       </div>
     </template>
@@ -74,7 +92,7 @@
               size="xs"
               color="red"
               icon="delete"
-              @click="deleteItem(props.row.id)"
+              @click="confirmDelete('single', props.row.id)"
             >
               <q-tooltip self="center middle" anchor="top middle"
                 >Delete</q-tooltip
@@ -131,7 +149,7 @@ export default {
       default: true,
       required: false
     },
-    showBulkActions: {
+    showTopActions: {
       type: Boolean,
       default: true,
       required: false
@@ -241,6 +259,9 @@ export default {
       const { page, rowsPerPage, sortBy, descending } = props.pagination;
       this.pagination = props.pagination;
     },
+    createItem() {
+      this.$emit("create", true);
+    },
     onCellValueChange(event, props) {
       console.log(event, props);
       this.updateField(props.row.id, props.col.field, event);
@@ -272,6 +293,30 @@ export default {
             type: "ERROR"
           });
         });
+    },
+    confirmDelete(mode, id) {
+      let message, action;
+      if (mode === "selected") {
+        message = "Are you sure you want to delete selected items?";
+      } else {
+        message = "Are you sure you want to delete this item?";
+      }
+      this.$q
+        .dialog({
+          title: "Delete",
+          message,
+          cancel: true,
+          persistent: false
+        })
+        .onOk(() => {
+          if (mode === "selected") {
+            this.deleteSelected();
+          } else {
+            this.deleteItem(id);
+          }
+        })
+        .onCancel(() => {})
+        .onDismiss(() => {});
     },
     deleteItem(id) {
       this.$apollo

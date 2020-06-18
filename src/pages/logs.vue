@@ -8,8 +8,9 @@
           model-name="log"
           :show-filters="pageSettings.filters"
           :show-popup-editors="pageSettings.popupEditing"
-          :show-bulk-actions="pageSettings.bulkActions"
+          :show-top-actions="pageSettings.topActions"
           :show-row-actions="pageSettings.rowActions"
+          @create="createItem"
         >
         </hasura-datatable>
       </q-card-section>
@@ -85,16 +86,26 @@ export default {
       }
     };
   },
-  created() {
-    this.$store.commit("appStore/setPageTitle", "Logs");
-    this.$store.commit("appStore/setPageName", "logs");
+  mounted() {
+    this.$store.commit("appStore/setActivePageName", "logs");
   },
   computed: {
+    pageStore(){
+      const activePageName = this.$store.state.appStore.activePageName
+      if(activePageName){
+        return this.$store.state.appStore[activePageName].page
+      }
+      return this.$store.state.appStore.page
+    },
     pageSettings() {
-      return this.$store.state.appStore.page.settings;
+      return this.pageStore.settings;
     }
   },
-  methods: {}
+  methods: {
+    createItem(){
+      this.$router.push("/logs/create");
+    }
+  }
 };
 </script>
 

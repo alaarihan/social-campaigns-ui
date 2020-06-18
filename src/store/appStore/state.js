@@ -1,16 +1,43 @@
+import gql from "graphql-tag";
+
+const page = {
+  title: "Social Campaigns",
+  name: "",
+  settings: {
+    popupEditing: false,
+    filters: false,
+    topActions: false,
+    rowActions: true,
+    backToUrl: null
+  }
+};
+
 export default function() {
   return {
-    page: {
-      title: "Social Campaigns",
-      name: "",
-      settings: {
-        popupEditing: false,
-        filters: false,
-        bulkActions: true,
-        rowActions: true
-      }
-    },
+    activePageName: null,
+    page: { ...page },
     logs: {
+      page: {
+        title: "Logs",
+        name: "logs",
+        settings: { ...page.settings }
+      },
+      type: {
+        name: "log",
+        title: "Log"
+      },
+      queries: {
+        create: gql`
+          mutation insert_log_one($object: log_insert_input!) {
+            insert_log_one(object: $object) {
+              id
+              message
+              type
+              host_name
+            }
+          }
+        `
+      },
       columns: [
         {
           name: "id",
@@ -81,6 +108,7 @@ export default function() {
           label: "Account",
           field: "account",
           align: "left",
+          notEditable: true,
           editor: false,
           sortable: false
         },
@@ -114,6 +142,35 @@ export default function() {
       ]
     },
     accounts: {
+      page: {
+        title: "Accounts",
+        name: "accounts",
+        settings: { ...page.settings }
+      },
+      type: {
+        name: "account",
+        title: "Account"
+      },
+      queries: {
+        create: gql`
+          mutation insert_account_one($object: account_insert_input!) {
+            insert_account_one(object: $object) {
+              id
+              campaign_id
+              username
+              password
+              email
+              status
+              status_duration
+              credit
+              last_activity
+              notes
+              created_at
+              updated_at
+            }
+          }
+        `
+      },
       columns: [
         {
           name: "id",
@@ -142,7 +199,7 @@ export default function() {
         },
         {
           name: "campaign_id",
-          label: "campaign #",
+          label: "Campaign ID",
           field: "campaign_id",
           align: "left",
           sortable: true,
@@ -333,6 +390,38 @@ export default function() {
       ]
     },
     campaigns: {
+      page: {
+        title: "Campaigns",
+        name: "campaigns",
+        settings: { ...page.settings }
+      },
+      type: {
+        name: "campaign",
+        title: "Campaign"
+      },
+      queries: {
+        create: gql`
+          mutation insert_campaign_one($object: campaign_insert_input!) {
+            insert_campaign_one(object: $object) {
+              id
+              name
+              type
+              limited
+              accounts_number
+              target
+              status
+              progress
+              link
+              cost_per_one
+              repeat
+              repeated
+              overwrite
+              created_at
+              updated_at
+            }
+          }
+        `
+      },
       columns: [
         {
           name: "id",

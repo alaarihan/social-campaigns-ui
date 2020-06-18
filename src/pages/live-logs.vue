@@ -91,8 +91,7 @@ export default {
   data() {
     return {};
   },
-  watch: {},
-  created() {
+  mounted() {
     this.$store.commit("appStore/setPageTitle", "Live Logs");
   },
   computed: {

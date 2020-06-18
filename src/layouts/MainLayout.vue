@@ -3,6 +3,15 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
+          v-if="activePageStore.settings.backToUrl"
+          flat
+          dense
+          round
+          icon="arrow_back"
+          aria-label="Go Back"
+          @click="goBack()"
+        />
+        <q-btn
           flat
           dense
           round
@@ -12,7 +21,7 @@
         />
         <q-toolbar-title>
           <slot name="page-title">
-            {{ $store.state.appStore.page.title }}
+            {{ activePageStore.title }}
           </slot>
         </q-toolbar-title>
         <slot name="page-menu"> </slot>
@@ -95,6 +104,23 @@ export default {
         }
       ]
     };
+  },
+  computed:{
+    activePageStore(){
+      const activePageName = this.$store.state.appStore.activePageName
+      if(activePageName){
+        return this.$store.state.appStore[activePageName].page
+      }
+      return this.$store.state.appStore.page
+    }
+  },
+  methods: {
+    goBack() {
+      const backToUrl = this.$store.state.appStore.page.settings.backToUrl;
+      if (backToUrl) {
+        this.$router.push(backToUrl);
+      }
+    }
   }
 };
 </script>

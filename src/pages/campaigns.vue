@@ -8,8 +8,9 @@
           model-name="campaign"
           :show-filters="pageSettings.filters"
           :show-popup-editors="pageSettings.popupEditing"
-          :show-bulk-actions="pageSettings.bulkActions"
+          :show-top-actions="pageSettings.topActions"
           :show-row-actions="pageSettings.rowActions"
+          @create="createItem"
         >
           <template v-slot:after-actions="{ props }">
             <q-btn round size="xs" color="primary" icon="settings">
@@ -32,14 +33,18 @@
               icon="send"
               label="Start"
               no-caps
+              dense
               @click="startCampaigns(props)"
+              class="q-mr-sm"
             />
             <q-btn
               color="primary"
               icon="pan_tool"
               label="Cancel"
               no-caps
+              dense
               @click="cancelCampaigns(props)"
+              class="q-mr-sm"
             />
           </template>
         </hasura-datatable>
@@ -129,16 +134,25 @@ export default {
       }
     };
   },
-  created() {
-    this.$store.commit("appStore/setPageTitle", "Campaigns");
-    this.$store.commit("appStore/setPageName", "campaigns");
+  mounted() {
+    this.$store.commit("appStore/setActivePageName", "campaigns");
   },
   computed: {
+    pageStore(){
+      const activePageName = this.$store.state.appStore.activePageName
+      if(activePageName){
+        return this.$store.state.appStore[activePageName].page
+      }
+      return this.$store.state.appStore.page
+    },
     pageSettings() {
-      return this.$store.state.appStore.page.settings;
+      return this.pageStore.settings;
     }
   },
   methods: {
+    createItem(){
+      this.$router.push("/campaigns/create");
+    },
     startCampaign(props) {
       const id = props.row.id;
       const data = { status: "PENDING", progress: 0, repeated: 0 };
