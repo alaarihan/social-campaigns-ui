@@ -10,7 +10,9 @@ const refreshAuthTokenIfNeeded = async (uri, options) => {
   
     if (accessTokenHasExpired) {
       console.log('accessToken has expired, try getting a new one')
-      await refreshToken().then(({jwt_token}) => {
+      await refreshToken().then((res) => {
+        if(!res) return
+        const jwt_token = res.jwt_token;
         options.headers.authorization = `Bearer ${jwt_token}`
       })
 
