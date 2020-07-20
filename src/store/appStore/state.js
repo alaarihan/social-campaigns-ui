@@ -198,26 +198,12 @@ export default function() {
           sortable: true
         },
         {
-          name: "campaign_id",
-          label: "Campaign ID",
-          field: "campaign_id",
-          align: "left",
-          sortable: true,
-          filter: {
-            type: "number",
-            op: "_eq"
-          },
-          editor: {
-            type: "number"
-          }
-        },
-        {
           name: "username",
           label: "User Name",
           field: "username",
           align: "left",
           sortable: true,
-          filter: { op: "_eq" }
+          filter: { op: "_ilike" }
         },
         {
           name: "password",
@@ -225,7 +211,7 @@ export default function() {
           field: "password",
           align: "left",
           sortable: true,
-          filter: { op: "_eq" }
+          filter: { op: "_ilike" }
         },
         {
           name: "email",
@@ -233,7 +219,7 @@ export default function() {
           field: "email",
           align: "left",
           sortable: true,
-          filter: { op: "_eq" }
+          filter: { op: "_ilike" }
         },
         {
           name: "status",
@@ -262,6 +248,10 @@ export default function() {
               {
                 value: "YV_SUSPENDED",
                 color: "deep-orange"
+              },
+              {
+                value: "LOGIN_FAILED",
+                color: "deep-orange"
               }
             ]
           },
@@ -274,7 +264,8 @@ export default function() {
               "DONE",
               "BLOCKED",
               "SUSPENDED",
-              "YV_SUSPENDED"
+              "YV_SUSPENDED",
+              "LOGIN_FAILED"
             ]
           },
           editor: {
@@ -285,7 +276,8 @@ export default function() {
               "DONE",
               "BLOCKED",
               "SUSPENDED",
-              "YV_SUSPENDED"
+              "YV_SUSPENDED",
+              "LOGIN_FAILED"
             ]
           },
           sortable: true
@@ -358,6 +350,20 @@ export default function() {
           filter: { op: "_ilike" },
           editor: {
             type: "textarea"
+          }
+        },
+        {
+          name: "campaign_id",
+          label: "Campaign ID",
+          field: "campaign_id",
+          align: "left",
+          sortable: true,
+          filter: {
+            type: "number",
+            op: "_eq"
+          },
+          editor: {
+            type: "number"
           }
         },
         {
