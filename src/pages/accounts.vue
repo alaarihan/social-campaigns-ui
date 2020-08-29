@@ -5,6 +5,9 @@
         <hasura-datatable
           :cols="$store.state.appStore.accounts.columns"
           :gql-queries="gqlQueries"
+          :initial-query-vars="{
+            order_by: { name: 'last_activity', descending: true }
+          }"
           model-name="account"
           :show-filters="pageSettings.filters"
           :show-popup-editors="pageSettings.popupEditing"
