@@ -19,13 +19,13 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 });
 
 const httpLinkConfig = {
-  uri: `https://${JSON.stringify(process.env.GRAPHQL_URI)}`,
+  uri: `https://social-like-api.future7.com/v1/graphql`,
   headers,
   fetch: refreshAuthTokenIfNeeded
 };
 
 const wsLinkConfig = {
-  uri: `wss://${JSON.stringify(process.env.GRAPHQL_URI)}`,
+  uri: `wss://social-like-api.future7.com/v1/graphql`,
   options: {
     reconnect: true,
     connectionParams: {
