@@ -1,42 +1,48 @@
 <template>
   <q-page class="flex flex-center">
-    <q-card square style="width: 400px; padding:50px">
-      <q-card-section>
+    <q-card square style="width: 400px; padding:30px">
+      <q-card-section class="q-pt-none">
         <div class="text-h6">
           Login
         </div>
       </q-card-section>
-
-      <q-card-section>
-        <q-input
-          id="email"
-          v-model.trim="login.body.email"
-          type="email"
-          label="Email"
-          :error="this.$v.login.body.email.$error"
-          required
-          autofocus
-        />
-        <q-input
-          id="password"
-          v-model="login.body.password"
-          type="password"
-          label="Password"
-          :error="$v.login.body.password.$error"
-          required
-          @keyup.enter="login"
-        /><br />
-        <q-checkbox
-          id="rememberMe"
-          v-model="login.rememberMe"
-          label="Remember me"
-        />
-      </q-card-section>
-      <q-card-actions>
-        <q-btn color="primary" :loading="loading" @click="doLogin">
-          Login
-        </q-btn>
-      </q-card-actions>
+      <q-form @submit="doLogin">
+        <q-card-section>
+          <q-input
+            id="email"
+            v-model.trim="login.body.email"
+            type="email"
+            label="Email"
+            :error="$v.login.body.email.$error"
+            required
+            autofocus
+            hide-bottom-space
+            class="q-pb-sm"
+          />
+          <q-input
+            id="password"
+            v-model="login.body.password"
+            type="password"
+            label="Password"
+            :error="$v.login.body.password.$error"
+            required
+            @keyup.enter="login"
+            hide-bottom-space
+            class="q-pb-sm"
+          />
+          <q-checkbox
+            id="rememberMe"
+            v-model="login.rememberMe"
+            label="Remember me"
+            class="q-pt-sm"
+          />
+        </q-card-section>
+        <q-card-actions>
+          <q-btn color="primary" type="submit" :loading="loading">
+            Login
+          </q-btn>
+        </q-card-actions>
+      </q-form>
       <router-link to="/password/forgot">
         <a>Forgot Password?</a>
       </router-link>
