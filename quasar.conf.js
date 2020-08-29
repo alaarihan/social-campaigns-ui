@@ -43,7 +43,7 @@ module.exports = function(/* ctx */) {
       //            (fastest compile time; minimum bundle size; most tedious)
       // * true   - Import everything from Quasar
       //            (not treeshaking Quasar; biggest bundle size; convenient)
-      all: "auto",
+      importStrategy: "auto",
 
       components: [],
       directives: [],
@@ -51,9 +51,6 @@ module.exports = function(/* ctx */) {
       // Quasar plugins
       plugins: ['Meta', 'Notify', 'Cookies', 'Dialog']
     },
-
-    // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
-    supportIE: false,
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ts
     supportTS: false,
