@@ -1,0 +1,28 @@
+name: Publish to Netlify
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - name: Install npm dependencies
+      run: npm install
+    - name: Run build task
+      run: npm run build:pwa
+      env:
+        GRAPHQL_URI: ${{ secrets.GRAPHQL_URI }}
+    - name: Deploy production to Netlify
+      uses: South-Paw/action-netlify-deploy@v1.0.4
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
+        build-dir: './dist/pwa'
+        comment-on-commit: true
