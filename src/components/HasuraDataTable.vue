@@ -130,6 +130,11 @@ export default {
       type: Object,
       required: true
     },
+    initialQueryVars: {
+      type: Object,
+      default: null,
+      required: false
+    },
     modelName: {
       type: String,
       required: true
@@ -212,7 +217,19 @@ export default {
       this.pagination.rowsNumber = this.data_aggregate.aggregate.count;
     }
   },
-  created() {},
+  created() {
+    if(this.initialQueryVars){
+      if(this.initialQueryVars.order_by && this.initialQueryVars.order_by.name){
+        this.pagination.sortBy = this.initialQueryVars.order_by.name
+        if(this.initialQueryVars.order_by.descending){
+          this.pagination.descending = true
+        }
+      }
+      if(this.initialQueryVars.where){
+        this.colsFilters = this.initialQueryVars.where
+      }
+    }
+  },
   computed: {
     activeFilters() {
       let activeFilter = {};
