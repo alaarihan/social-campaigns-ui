@@ -17,7 +17,7 @@ jobs:
     - name: Run build task
       run: npm run build:pwa
       env:
-        GRAPHQL_URI: social-like-api.future7.com/v1/graphql
+        GRAPHQL_URI: ${{ secrets.GRAPHQL_URI }}
     - name: Deploy production to Netlify
       uses: South-Paw/action-netlify-deploy@v1.0.4
       with:
