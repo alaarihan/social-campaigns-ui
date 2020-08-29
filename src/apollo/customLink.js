@@ -22,13 +22,13 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 const onServer = process.env.SERVER;
 const httpLinkConfig = {
-  uri: "https://" + process.env.GRAPHQL_URI,
+  uri: `https://${process.env.GRAPHQL_URI}`,
   headers,
   fetch: refreshAuthTokenIfNeeded
 };
 
 const wsLinkConfig = {
-  uri: "wss://" + process.env.GRAPHQL_URI,
+  uri: `wss://${process.env.GRAPHQL_URI}`,
   options: {
     reconnect: true,
     connectionParams: {
