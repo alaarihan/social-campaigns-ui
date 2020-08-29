@@ -2,8 +2,6 @@ import { HttpLink } from "apollo-link-http";
 import { ApolloLink, split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
-import fetch from "node-fetch";
-import { w3cwebsocket } from "websocket";
 import { getJWTToken } from "../js/auth";
 import refreshAuthTokenIfNeeded from "./refresh-auth-token-fetch";
 
@@ -20,7 +18,6 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-const onServer = process.env.SERVER;
 const httpLinkConfig = {
   uri: `https://${process.env.GRAPHQL_URI}`,
   headers,
@@ -37,10 +34,6 @@ const wsLinkConfig = {
   }
 };
 
-if (onServer) {
-  httpLinkConfig.fetch = fetch;
-  wsLinkConfig.webSocketImpl = w3cwebsocket;
-}
 // Create the http link
 const httpLink = new HttpLink(httpLinkConfig);
 
