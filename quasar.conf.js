@@ -83,7 +83,7 @@ module.exports = function(/* ctx */) {
           }
         });
       },
-      chainWebpack(chain, { isServer, isClient }) {
+      chainWebpack(chain) {
         chain.module
           .rule("vue")
           .use("vue-loader")
