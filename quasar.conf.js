@@ -118,7 +118,11 @@ module.exports = function(/* ctx */) {
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      workboxOptions: {
+        exclude: [
+          './public/_redirects',
+      ]
+      }, // only for GenerateSW
       manifest: {
         name: "Social Campaigns",
         short_name: "Social Campaigns",
