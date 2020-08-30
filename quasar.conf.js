@@ -120,7 +120,7 @@ module.exports = function(/* ctx */) {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {
         exclude: [
-          'public/_redirects',
+          '_redirects',
       ]
       }, // only for GenerateSW
       manifest: {
