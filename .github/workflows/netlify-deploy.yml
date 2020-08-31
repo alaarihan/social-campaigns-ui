@@ -25,4 +25,3 @@ jobs:
         netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
         build-dir: './dist/pwa'
-        comment-on-commit: true
