@@ -1,4 +1,5 @@
 import { refreshToken } from "../js/auth";
+import logRemotely from "../js/logger";
 
 const refreshAuthTokenIfNeeded = async (uri, options) => {
     const initialRequest = await fetch(uri, options)
@@ -10,13 +11,17 @@ const refreshAuthTokenIfNeeded = async (uri, options) => {
   
     if (accessTokenHasExpired) {
       console.log('accessToken has expired, try getting a new one')
+      await logRemotely('accessToken has expired, try getting a new one')
       await refreshToken().then((res) => {
         if(!res) return
         const jwt_token = res.jwt_token;
         options.headers.authorization = `Bearer ${jwt_token}`
+      }).catch(async (error) => {
+        await logRemotely(error)
       })
 
-      return fetch(uri, options).catch(res => {
+      return fetch(uri, options).catch(async error => {
+        await logRemotely(error)
         console.log('Could not update the accessToken #2')
       })
     }
