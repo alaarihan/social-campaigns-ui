@@ -2,7 +2,7 @@ import { HttpLink } from "apollo-link-http";
 import { ApolloLink, split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
-import { getJWTToken } from "../js/auth";
+import { getJWTToken, refreshToken } from "../js/auth";
 import refreshAuthTokenIfNeeded from "./refresh-auth-token-fetch";
 
 let authCookie = getJWTToken();
@@ -18,6 +18,22 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
+const subscriptionMiddleware = {
+  applyMiddleware: async function(options, next) {
+    // add the authorization to the headers
+    authCookie = getJWTToken();
+    if (!authCookie) {
+      await refreshToken();
+      authCookie = getJWTToken();
+    }
+    headers = authCookie ? { authorization: `Bearer ${authCookie}` } : {};
+    options.connectionParams = {
+      headers
+    };
+    next();
+  }
+};
+
 const httpLinkConfig = {
   uri: `https://social-hits-api.future7.com/v1/graphql`,
   headers,
@@ -28,8 +44,10 @@ const wsLinkConfig = {
   uri: `wss://social-hits-api.future7.com/v1/graphql`,
   options: {
     reconnect: true,
-    connectionParams: {
-      headers
+    connectionParams: () => {
+      authCookie = getJWTToken();
+      headers = authCookie ? { authorization: `Bearer ${authCookie}` } : {};
+      return { headers };
     }
   }
 };
@@ -39,6 +57,8 @@ const httpLink = new HttpLink(httpLinkConfig);
 
 // Create the subscription websocket link
 const wsLink = new WebSocketLink(wsLinkConfig);
+
+wsLink.subscriptionClient.use([subscriptionMiddleware]);
 
 const splitedLink = split(
   // split based on operation type
@@ -53,9 +73,6 @@ const splitedLink = split(
   httpLink
 );
 
-const customLink = new ApolloLink.from([
-  authMiddleware,
-  splitedLink
-]);
+const customLink = new ApolloLink.from([authMiddleware, splitedLink]);
 
 export { customLink };
