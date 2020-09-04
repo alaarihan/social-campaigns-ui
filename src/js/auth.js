@@ -29,7 +29,7 @@ async function refreshToken() {
     .catch(async error => {
       console.error(error);
       await logRemotely(error)
-      // window.location.replace("/auth/login");
+      window.location.replace("/auth/login");
     });
 }
 
