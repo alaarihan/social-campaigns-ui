@@ -1,6 +1,7 @@
 import { HttpLink } from "apollo-link-http";
 import { ApolloLink, split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
+import { RetryLink } from "apollo-link-retry";
 import { getMainDefinition } from "apollo-utilities";
 import { getJWTToken, refreshToken } from "../js/auth";
 import refreshAuthTokenIfNeeded from "./refresh-auth-token-fetch";
@@ -51,6 +52,17 @@ const wsLinkConfig = {
     }
   }
 };
+const retryLink = new RetryLink({
+  delay: {
+    initial: 500,
+    max: Infinity,
+    jitter: true
+  },
+  attempts: {
+    max: 50,
+    retryIf: (error, _operation) => !!error
+  }
+});
 
 // Create the http link
 const httpLink = new HttpLink(httpLinkConfig);
@@ -73,6 +85,10 @@ const splitedLink = split(
   httpLink
 );
 
-const customLink = new ApolloLink.from([authMiddleware, splitedLink]);
+const customLink = new ApolloLink.from([
+  authMiddleware,
+  retryLink,
+  splitedLink
+]);
 
 export { customLink };
