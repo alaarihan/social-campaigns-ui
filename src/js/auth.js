@@ -5,6 +5,9 @@ import logRemotely from "./logger";
 async function refreshToken() {
   return await fetchql
     .query({
+      requestOptions: {
+        headers: {},
+      },
       operationName: "refresh_token",
       query: `mutation refresh_token{
         refresh_token {
@@ -26,7 +29,7 @@ async function refreshToken() {
     .catch(async error => {
       console.error(error);
       await logRemotely(error)
-      window.location.replace("/auth/login");
+      // window.location.replace("/auth/login");
     });
 }
 
