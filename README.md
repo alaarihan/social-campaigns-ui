@@ -1,4 +1,4 @@
-# Social Campaigns UI (social-campaigns-ui)
+# Social Campaigns UI
 
 A UI To manage Social Camoaigns Data
 
