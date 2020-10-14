@@ -5,7 +5,7 @@ const fetchql = new FetchQL({
   requestOptions: {
     credentials: 'include',
   },
-  url: process.env.GRAPHQL_URI,
+  url: `https://${process.env.GRAPHQL_URI}`,
   headers: JWTToken ? { Authorization: JWTToken } : null
 });
 export default fetchql;
