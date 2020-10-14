@@ -5,7 +5,7 @@ const fetchql = new FetchQL({
   requestOptions: {
     credentials: 'include',
   },
-  url: `https://social-like-api.future7.com/v1/graphql`,
+  url: process.env.GRAPHQL_URI,
   headers: JWTToken ? { Authorization: JWTToken } : null
 });
 export default fetchql;
