@@ -36,13 +36,13 @@ const subscriptionMiddleware = {
 };
 
 const httpLinkConfig = {
-  uri: `https://social-like-api.future7.com/v1/graphql`,
+  uri: `https://${process.env.GRAPHQL_URI}`,
   headers,
   fetch: refreshAuthTokenIfNeeded
 };
 
 const wsLinkConfig = {
-  uri: `wss://social-like-api.future7.com/v1/graphql`,
+  uri: `wss://${process.env.GRAPHQL_URI}`,
   options: {
     reconnect: true,
     connectionParams: () => {
